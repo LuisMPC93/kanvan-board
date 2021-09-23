@@ -36,6 +36,38 @@ export class KanbanBoard implements OnInit {
   generateTestId = (name) => {
     return name.split(' ').join('-');
   }
+
+  addTask = (e) => {
+    if((<HTMLInputElement>document.querySelector("#create-task-input")).value){
+      this.stagesTasks[0].push({name:(<HTMLInputElement>document.querySelector("#create-task-input")).value,stage: 0});
+      (<HTMLInputElement>document.querySelector("#create-task-input")).value = "";
+    }
+  }
+
+  deleteTask = (e,task) => {
+    let taskIndex = this.stagesTasks[task.stage].findIndex(item => item.name == task.name);
+    this.stagesTasks[task.stage].splice(taskIndex,1);
+  }
+
+  checkTaskStageBack = (stage) => {
+    return stage == 0;
+  }
+
+  checkTaskStageForward = (stage) => {
+    return stage == 3;
+  }
+
+  backTask = (e,task) => {
+    this.deleteTask(e,task);
+    --task.stage;
+    this.stagesTasks[task.stage].push(task);
+  }
+
+  nextTask = (e,task) => {
+    this.deleteTask(e,task);
+    ++task.stage;
+    this.stagesTasks[task.stage].push(task);
+  }
 }
 
 interface Task {
